@@ -13,7 +13,70 @@ namespace AdventOfCode2023
 
             string filelocDay2 = "Day2Input.txt";
             Day2Part1(filelocDay2);
+            Day2Part2(filelocDay2);
 
+        }
+
+        private static void Day2Part2(string filelocDay2)
+        {
+            int sum = 0;
+            int red = 12, green = 13, blue = 14;
+            int gameCounter = 0;
+            
+
+
+            using (StreamReader read = new StreamReader(filelocDay2))
+            {
+                string line;
+                while ((line = read.ReadLine()) != null)
+                {
+                    int fewestRed = 0, fewestGreen = 0, fewestBlue = 0;
+                    gameCounter++;
+                    var subsets = line.Split(':', ';');
+
+
+                    for (int i = 1; i < subsets.Length; i++)
+                    {
+                        int foundRed = 0, foundGreen = 0, foundBlue = 0;
+                        //Console.WriteLine(subsets[i]);
+                        var splits = subsets[i].Split(' ', ',');
+                        for (int j = 2; j < splits.Length; j++)
+                        {
+                            //Console.WriteLine(splits[j]);
+
+                            if (splits[j].Equals("blue"))
+                            {
+                                foundBlue += ushort.Parse(splits[j - 1]);
+                                if (foundBlue > fewestBlue)
+                                {
+                                    fewestBlue = foundBlue;
+                                }
+                            }
+                            else if (splits[j].Equals("red"))
+                            {
+                                foundRed += ushort.Parse(splits[j - 1]);
+                                if (foundRed > fewestRed)
+                                {
+                                    fewestRed = foundRed;
+                                }
+                            }
+                            else if (splits[j].Equals("green"))
+                            {
+                                foundGreen += ushort.Parse(splits[j - 1]);
+                                if (foundGreen > fewestGreen)
+                                {
+                                    fewestGreen = foundGreen;
+                                }
+                            }
+                        }
+
+                    }
+                        //Console.WriteLine("Power: " + (fewestBlue * fewestGreen * fewestRed));
+                        sum += fewestBlue*fewestGreen*fewestRed;
+
+                }
+                Console.WriteLine("Sum is: " + sum);
+            }
         }
 
         private static void Day2Part1(string filelocDay2)
@@ -35,11 +98,11 @@ namespace AdventOfCode2023
                     for (int i = 1; i < subsets.Length; i++)
                     {
                         int foundRed = 0, foundGreen = 0, foundBlue = 0;
-                        Console.WriteLine(subsets[i]);
+                        //Console.WriteLine(subsets[i]);
                         var splits = subsets[i].Split(' ', ',');
                         for (int j = 2; j < splits.Length; j++)
                         {
-                            Console.WriteLine(splits[j]);
+                            //Console.WriteLine(splits[j]);
 
                             if (splits[j].Equals("blue"))
                             {
@@ -56,7 +119,7 @@ namespace AdventOfCode2023
 
                             if (foundBlue > blue || foundRed > red || foundGreen > green)
                             {
-                                Console.WriteLine("breaking inner");
+                                //Console.WriteLine("breaking inner");
                                 impossible = true;
                                 break;
                                 
@@ -64,7 +127,7 @@ namespace AdventOfCode2023
                         }
                         if (impossible)
                         {
-                            Console.WriteLine("breaking outer");
+                            //Console.WriteLine("breaking outer");
                             break;
 
                         }
@@ -74,9 +137,10 @@ namespace AdventOfCode2023
                         sum += gameCounter;
                     }
 
-                    Console.WriteLine("Sum is: " + sum);
+                    
                 }
             }
+            Console.WriteLine("Sum is: " + sum);
         }
 
         private static void extractColorNumbers(string[] splits)
