@@ -14,3 +14,4 @@ C:\Users\abdig\Desktop\Portfolio\AdventOfCode2023\AdventOfCode2023\obj\Debug\net
 C:\Users\abdig\Desktop\Portfolio\AdventOfCode2023\AdventOfCode2023\obj\Debug\net7.0\AdventOfCode2023.genruntimeconfig.cache
 C:\Users\abdig\Desktop\Portfolio\AdventOfCode2023\AdventOfCode2023\obj\Debug\net7.0\ref\AdventOfCode2023.dll
 C:\Users\abdig\Desktop\Portfolio\AdventOfCode2023\AdventOfCode2023\bin\Debug\net7.0\InputDay1Part1.txt
+C:\Users\abdig\Desktop\Portfolio\AdventOfCode2023\AdventOfCode2023\bin\Debug\net7.0\Day2Input.txt

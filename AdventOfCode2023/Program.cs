@@ -10,7 +10,80 @@ namespace AdventOfCode2023
             string fileloc = "InputDay1Part1.txt";
             Day1Part1(fileloc);
             Day1Part2(fileloc);
+
+            string filelocDay2 = "Day2Input.txt";
+            Day2Part1(filelocDay2);
+
         }
+
+        private static void Day2Part1(string filelocDay2)
+        {
+            int sum = 0;
+            int red = 12, green = 13, blue = 14;
+            int gameCounter = 0;
+            
+
+            using (StreamReader read = new StreamReader(filelocDay2))
+            {
+                string line;
+                while ((line = read.ReadLine()) != null)
+                {
+                    bool impossible = false;
+                    gameCounter++;
+                    var subsets = line.Split(':', ';');
+
+                    for (int i = 1; i < subsets.Length; i++)
+                    {
+                        int foundRed = 0, foundGreen = 0, foundBlue = 0;
+                        Console.WriteLine(subsets[i]);
+                        var splits = subsets[i].Split(' ', ',');
+                        for (int j = 2; j < splits.Length; j++)
+                        {
+                            Console.WriteLine(splits[j]);
+
+                            if (splits[j].Equals("blue"))
+                            {
+                                foundBlue += ushort.Parse(splits[j - 1]);
+                            }
+                            else if (splits[j].Equals("red"))
+                            {
+                                foundRed += ushort.Parse(splits[j - 1]);
+                            }
+                            else if (splits[j].Equals("green"))
+                            {
+                                foundGreen += ushort.Parse(splits[j - 1]);
+                            }
+
+                            if (foundBlue > blue || foundRed > red || foundGreen > green)
+                            {
+                                Console.WriteLine("breaking inner");
+                                impossible = true;
+                                break;
+                                
+                            }
+                        }
+                        if (impossible)
+                        {
+                            Console.WriteLine("breaking outer");
+                            break;
+
+                        }
+                    }
+                    if (!impossible)
+                    {
+                        sum += gameCounter;
+                    }
+
+                    Console.WriteLine("Sum is: " + sum);
+                }
+            }
+        }
+
+        private static void extractColorNumbers(string[] splits)
+        {
+            
+        }
+
 
         private static void Day1Part1(string fileloc)
         {
@@ -47,9 +120,7 @@ namespace AdventOfCode2023
                     var last = Regex.Match(line, regex, RegexOptions.RightToLeft);
 
                     calibration = ushort.Parse(extractInt(first.Value) + extractInt(last.Value));
-                    Console.WriteLine("Calibration is: " + calibration + " found at iteration: " + counter++ );
                     sum += calibration;
-                    Console.WriteLine("Partially calc sum is: " + sum);
                 }
             }
 
