@@ -22,8 +22,14 @@ namespace AdventOfCode2023
 
             string filelocDay4 = "Day4Input.txt";
             Day4Part1(filelocDay4);
+            Day4Part2(filelocDay4);
 
 
+        }
+
+        private static void Day4Part2(string filelocDay4)
+        {
+            throw new NotImplementedException();
         }
 
         private static void Day4Part1(string filelocDay4)
@@ -54,7 +60,6 @@ namespace AdventOfCode2023
                         {
                             if (item.Equals(number))
                             {
-                                Console.WriteLine("Winning nr: " + item); 
                                 matchesFound++;
                                 break;
                             }
@@ -64,7 +69,6 @@ namespace AdventOfCode2023
                     if(matchesFound > 0)
                     {
                         matchesFound -= 1;
-                        Console.WriteLine("matchesFound: " + matchesFound + " so the added points are: " + Math.Pow(2, matchesFound));
 
                         points += Math.Pow(2, matchesFound);
                     }
