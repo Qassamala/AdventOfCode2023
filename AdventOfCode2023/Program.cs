@@ -35,14 +35,15 @@ namespace AdventOfCode2023
             // For Part2
             Dictionary<int, int> instances = new Dictionary<int, int>();
             int cardNumber = 0;
-            instances.Add(1, 1);
             int copiesWonUntilIncluding = 0;
+            instances.Add(1, 1);
 
             using (StreamReader read = new StreamReader(filelocDay4))
             {
                 while ((line = read.ReadLine()) != null)
                 {
                     cardNumber++;   //Part 2
+
                     double matchesFound = 0;
                     var card  = line.Split('|');
                     var chosenNumbers = card[1].Split(' ')
@@ -71,16 +72,17 @@ namespace AdventOfCode2023
 
                     // For Part 2
                     copiesWonUntilIncluding = cardNumber + (int)matchesFound;
-                    for (int i = copiesWonUntilIncluding; i > cardNumber; i--)
+                    for (int i = cardNumber +1; i <= copiesWonUntilIncluding; i++)
                     {
                         if (!instances.ContainsKey(i))
                         {
-                            instances.Add(i, 1);
+                            instances.Add(i, 1);    // original added
+                            instances[i] = 2;   // copy added
                         }
                         else
                         {
                             instances.TryGetValue(i, out var currentCount);
-                            instances[i] = currentCount + 1;
+                            instances[i] = currentCount + 1; // another copy added
                         }
                     }
 
