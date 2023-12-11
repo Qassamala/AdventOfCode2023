@@ -22,14 +22,9 @@ namespace AdventOfCode2023
 
             string filelocDay4 = "Day4Input.txt";
             Day4Part1(filelocDay4);
-            Day4Part2(filelocDay4);
+            //Day4Part2(filelocDay4);
 
 
-        }
-
-        private static void Day4Part2(string filelocDay4)
-        {
-            throw new NotImplementedException();
         }
 
         private static void Day4Part1(string filelocDay4)
@@ -37,10 +32,17 @@ namespace AdventOfCode2023
             double points = 0;
             string line;
 
+            // For Part2
+            Dictionary<int, int> instances = new Dictionary<int, int>();
+            int cardNumber = 0;
+            instances.Add(1, 1);
+            int copiesWonUntilIncluding = 0;
+
             using (StreamReader read = new StreamReader(filelocDay4))
             {
                 while ((line = read.ReadLine()) != null)
                 {
+                    cardNumber++;   //Part 2
                     double matchesFound = 0;
                     var card  = line.Split('|');
                     var chosenNumbers = card[1].Split(' ')
@@ -66,6 +68,23 @@ namespace AdventOfCode2023
                         }
                         
                     }
+
+                    // For Part 2
+                    copiesWonUntilIncluding = cardNumber + (int)matchesFound;
+                    for (int i = copiesWonUntilIncluding; i > cardNumber; i--)
+                    {
+                        if (!instances.ContainsKey(i))
+                        {
+                            instances.Add(i, 1);
+                        }
+                        else
+                        {
+                            instances.TryGetValue(i, out var currentCount);
+                            instances[i] = currentCount + 1;
+                        }
+                    }
+
+                    // For part 1
                     if(matchesFound > 0)
                     {
                         matchesFound -= 1;
@@ -76,6 +95,10 @@ namespace AdventOfCode2023
                     
                 }
                 Console.WriteLine("Day4Part1 Sum is: " + points);
+
+                //Part 2
+                Console.WriteLine("Day4Part2 Sum is: " + instances.Sum(x => x.Value));
+                
             }
 
         }
