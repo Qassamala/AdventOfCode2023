@@ -21,13 +21,13 @@ namespace AdventOfCode2023
             //Day3Part1(filelocDay3);
 
             string filelocDay4 = "Day4Input.txt";
-            Day4Part1(filelocDay4);
+            Day4Part1And2(filelocDay4);
             //Day4Part2(filelocDay4);
 
 
         }
 
-        private static void Day4Part1(string filelocDay4)
+        private static void Day4Part1And2(string filelocDay4)
         {
             double points = 0;
             string line;
@@ -37,6 +37,7 @@ namespace AdventOfCode2023
             int cardNumber = 0;
             int copiesWonUntilIncluding = 0;
             instances.Add(1, 1);
+            Dictionary<int, int> instancesWithMatchesFound = new Dictionary<int, int>();
 
             using (StreamReader read = new StreamReader(filelocDay4))
             {
@@ -70,22 +71,15 @@ namespace AdventOfCode2023
                         
                     }
 
-                    // For Part 2
-                    copiesWonUntilIncluding = cardNumber + (int)matchesFound;
-                    for (int i = cardNumber +1; i <= copiesWonUntilIncluding; i++)
-                    {
-                        if (!instances.ContainsKey(i))
-                        {
-                            instances.Add(i, 1);    // original added
-                            instances[i] = 2;   // copy added
-                        }
-                        else
-                        {
-                            instances.TryGetValue(i, out var currentCount);
-                            instances[i] = currentCount + 1; // another copy added
-                        }
-                    }
+                    // Part 2
+                    // Create a map with how many copies are generated from each original
+                    copiesWonUntilIncluding = cardNumber + (int)matchesFound;   // For part 1 & 2
 
+                    if (!instancesWithMatchesFound.ContainsKey(cardNumber))
+                    {
+                        instancesWithMatchesFound.Add(cardNumber, copiesWonUntilIncluding);
+                    }
+              
                     // For part 1
                     if(matchesFound > 0)
                     {
@@ -93,16 +87,32 @@ namespace AdventOfCode2023
 
                         points += Math.Pow(2, matchesFound);
                     }
-
-                    
+                 
                 }
-                Console.WriteLine("Day4Part1 Sum is: " + points);
-
-                //Part 2
-                Console.WriteLine("Day4Part2 Sum is: " + instances.Sum(x => x.Value));
                 
             }
 
+            Console.WriteLine("Day4Part1 Sum is: " + points);
+
+            // Part 2
+            int[] list = new int[instancesWithMatchesFound.Count+1];
+
+            // Principle is: store how many copies for each card in an array.
+            // As you iterate, check how many copies plus 1 original and add that nr
+            // to the succedding matching
+             
+            foreach (var item in instancesWithMatchesFound)
+            {
+                instancesWithMatchesFound.TryGetValue(item.Key, out var copiesuntil);
+
+                int increment = 1 + list[item.Key]; // check hom many copies exist and the original
+                for (int i = item.Key+1; i <= copiesuntil; i++)
+                {
+                    list[i] = list[i] + increment;
+                }
+            }
+
+            Console.WriteLine("Day4Part2 Sum is: " + (list.Sum() + (list.Length)-1));
         }
 
         private static void Day3Part1(string filelocDay3)
