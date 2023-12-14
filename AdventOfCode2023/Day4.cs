@@ -79,7 +79,7 @@ namespace AdventOfCode2023
 
             }
 
-            Console.WriteLine("Day4Part1 Sum is: " + points);
+            Console.WriteLine("Day4 Part1 Sum is: " + points);
 
             // Part 2
             int[] list = new int[instancesWithMatchesFound.Count + 1];
@@ -99,7 +99,7 @@ namespace AdventOfCode2023
                 }
             }
 
-            Console.WriteLine("Day4Part2 Sum is: " + (list.Sum() + (list.Length) - 1));
+            Console.WriteLine("Day4 Part2 Sum is: " + (list.Sum() + (list.Length) - 1));
         }
 
 
