@@ -59,17 +59,18 @@ namespace AdventOfCode2023
             int index = 0;
 
             string mapName = null;
-            
 
-           
+
+
 
             foreach (var line in inputData)
             {
-                if (line.Contains(':')){
+                if (line.Contains(':'))
+                {
                     mapName = line;
                     continue;
                 }
-                    
+
                 if (line.Equals(""))
                 {
                     index++;
@@ -84,28 +85,34 @@ namespace AdventOfCode2023
 
                 maps[index].Add(mapData);
 
-                /*
-                 * if source(seed) >= sourcerangestart and <= source + rangelength
-                 *  then source = destination + ( source - sourcerangstart)
-                 *  
-                 *  
-                 * 
-                 */
-                /*
-                    if (source >= mapData.sourceRangeStart && source <= sourceRangeStart + rangeLength)
-                    {
-                        source = mapData.destinationRangeStart + (source - sourceRangeStart);
-                    }
-                    */
-
             }
-            //index = 0;
-            //long source = long.Parse(seeds[index]);   //First seed
+
 
             //must loop through each seed and check the mapdatas
 
             long lowest = long.MaxValue;
 
+            //Part 1
+            Part1And2(seeds, maps, lowest);
+
+            // Part 2
+            List<string> seedsPart2= new List<string>();
+
+            for (int i = 0; i < seeds.Count; i=i+2)
+            {
+                for (long j = long.Parse(seeds[i]); j < (long.Parse(seeds[i]) + long.Parse(seeds[i+1])); j++)
+                {
+                    seedsPart2.Add(j.ToString());
+                }
+            }
+
+            Console.WriteLine(seedsPart2.Count);
+
+            Part1And2(seedsPart2, maps, lowest);
+        }
+
+        private static long Part1And2(List<string> seeds, List<MapData>[] maps, long lowest)
+        {
             foreach (var item in seeds)
             {
                 long source = long.Parse(item);
@@ -134,10 +141,11 @@ namespace AdventOfCode2023
                 {
                     lowest = source;
                 }
-                    
+
             }
 
             Console.WriteLine("Lowest: " + lowest);
+            return lowest;
         }
 
         private static List<MapData>[] CreateArrayOfLists()
