@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -98,27 +99,45 @@ namespace AdventOfCode2023
                     */
 
             }
-            long source = long.Parse(seeds[index]);   //First seed
-            index = 0;
+            //index = 0;
+            //long source = long.Parse(seeds[index]);   //First seed
 
             //must loop through each seed and check the mapdatas
 
+            long lowest = long.MaxValue;
+
             foreach (var item in seeds)
             {
-                foreach (var mapData in maps[index])
+                long source = long.Parse(item);
+
+                foreach (var map in maps)
                 {
-                    if (source >= mapData.sourceRangeStart && source <= sourceRangeStart + rangeLength)
+                    foreach (var mapData in map)
                     {
-                        source = mapData.destinationRangeStart + (source - sourceRangeStart);
-                        index++;
+                        /*
+                        Console.WriteLine("Source: " + source);
+                        Console.WriteLine(source >= mapData.sourceRangeStart);
+                        Console.WriteLine(source <= mapData.sourceRangeStart + mapData.rangeLength);
+                        */
+
+                        if (source >= mapData.sourceRangeStart && source <= mapData.sourceRangeStart + mapData.rangeLength)
+                        {
+                            source = mapData.destinationRangeStart + (source - mapData.sourceRangeStart);
+                            //Console.WriteLine("Source Changed to: " + source);
+                            break;
+                        }
+
                     }
-                    
                 }
-               
-                
+
+                if (source < lowest)
+                {
+                    lowest = source;
+                }
+                    
             }
 
-            Console.WriteLine(seeds[1]);
+            Console.WriteLine("Lowest: " + lowest);
         }
 
         private static List<MapData>[] CreateArrayOfLists()
