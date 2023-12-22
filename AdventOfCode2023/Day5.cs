@@ -98,17 +98,101 @@ namespace AdventOfCode2023
             // Part 2
             List<string> seedsPart2= new List<string>();
 
+            /*
             for (int i = 0; i < seeds.Count; i=i+2)
             {
+                Console.WriteLine((seeds[i+1]));
+                
                 for (long j = long.Parse(seeds[i]); j < (long.Parse(seeds[i]) + long.Parse(seeds[i+1])); j++)
                 {
                     seedsPart2.Add(j.ToString());
                 }
+                
+            }
+            */
+            /*
+            lowest = long.MaxValue;
+            for (int i = 0; i < seeds.Count; i = i + 2)
+            {
+                for (long j = long.Parse(seeds[i]); j < (long.Parse(seeds[i]) + long.Parse(seeds[i + 1])); j++)
+                {
+                    long calc = Part2(j, maps);
+                    if (calc < lowest)
+                    {
+                        lowest = calc;
+                    }
+                }
+
+            }
+            */
+
+
+
+            lowest = Part2Again(maps, seeds);
+            Console.WriteLine("Part2: " + lowest);
+        }
+
+        private long Part2Again(List<MapData>[] maps, List<string> seeds)
+        {
+            long destination = 0;
+            long target = 0;
+            bool found = false;
+            string mapName = null;
+            
+
+            maps.Reverse();
+            while (!found)
+            {
+                target = destination;
+                int run = 0;
+                foreach (var map in maps.Reverse())
+                {
+                    
+                    
+                    foreach (var mapData in map)
+                    {
+                        mapName = mapData.mapName;
+                        run++;
+                        Console.WriteLine("Checking run : " + (run == map.Count));
+                        if (run == map.Count)
+                        {
+                            Console.WriteLine("Breaking");
+                            break;
+                        }
+
+                        Console.WriteLine("Run: " + run + " mapcount: " + map.Count);
+
+                        Console.WriteLine("Target: " + target);
+                        Console.WriteLine(target >= mapData.sourceRangeStart);
+                        Console.WriteLine(target <= mapData.sourceRangeStart + mapData.rangeLength);
+                        
+
+                        if (target >= mapData.destinationRangeStart && target <= mapData.destinationRangeStart + mapData.rangeLength)
+                        {
+                            target = mapData.sourceRangeStart + (target - mapData.destinationRangeStart);
+                            Console.WriteLine("Source Changed to: " + target);
+                            break;
+                        }
+
+                    }
+
+                    
+                }
+
+                Console.WriteLine("Mapname: " + mapName);
+                if (seeds.Contains(target.ToString()) && mapName.Equals("seed-to-soil map:"))
+                {
+                    found = true;
+                    return destination;
+                }
+                destination++;
             }
 
-            Console.WriteLine(seedsPart2.Count);
+            return 0;
 
-            Part1And2(seedsPart2, maps, lowest);
+
+
+
         }
 
         private static long Part1And2(List<string> seeds, List<MapData>[] maps, long lowest)
@@ -146,6 +230,32 @@ namespace AdventOfCode2023
 
             Console.WriteLine("Lowest: " + lowest);
             return lowest;
+        }
+
+        private static long Part2(long source, List<MapData>[] maps)
+        {
+
+            foreach (var map in maps)
+            {
+                foreach (var mapData in map)
+                {
+                    /*
+                    Console.WriteLine("Source: " + source);
+                    Console.WriteLine(source >= mapData.sourceRangeStart);
+                    Console.WriteLine(source <= mapData.sourceRangeStart + mapData.rangeLength);
+                    */
+
+                    if (source >= mapData.sourceRangeStart && source <= mapData.sourceRangeStart + mapData.rangeLength)
+                    {
+                        source = mapData.destinationRangeStart + (source - mapData.sourceRangeStart);
+                        //Console.WriteLine("Source Changed to: " + source);
+                        break;
+                    }
+
+                }
+            }
+
+            return source;
         }
 
         private static List<MapData>[] CreateArrayOfLists()
